@@ -63,7 +63,7 @@ namespace PORO.ViewModels
                 {
                     PublishModels = (PublishModel)parameters[ParamKeys.Share.ToString()];
                     path = PublishModels.Image;
-                    ImageReview = ImageSource.FromFile(path);
+                    ImageReview = path;
                     Description = PublishModels.Description;
                 }
             }
