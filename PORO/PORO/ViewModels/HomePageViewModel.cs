@@ -51,6 +51,7 @@ namespace PORO.ViewModels
             ItemSelectedCommand = new Command(ListSelectedItem);
             AddCommand = new Command(TakePhoto);
             LogoutCommand = new Command(ExcuteLogout);
+            UserCommand = new Command(ExcuteUser);
         }
         #endregion
 
@@ -248,6 +249,14 @@ namespace PORO.ViewModels
                           Preferences.Set("userId", 0);
                           await Navigation.NavigateAsync(ManagerPage.LoginPage, animated: false);
                       }));
+        }
+        #endregion
+
+        #region UserCommand
+        public ICommand UserCommand { get; set; }
+        public async void ExcuteUser()
+        {
+            await Navigation.NavigateAsync(ManagerPage.UserPage, animated: false);
         }
         #endregion
     }

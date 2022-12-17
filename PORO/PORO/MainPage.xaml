@@ -4,19 +4,13 @@
              x:Class="PORO.MainPage"
              xmlns:viewmodels="clr-namespace:PORO.ViewModels"
              x:DataType="viewmodels:MainPageViewModel"
-             NavigationPage.HasNavigationBar="False">
-    <ContentPage.Background>
-        <LinearGradientBrush EndPoint="1,0">
-            <GradientStop Color="#FF3333" Offset="0.1" />
-            <GradientStop Color="#003065" Offset="1.0" />
-        </LinearGradientBrush>
-    </ContentPage.Background>
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
 
-    <Label Text="PORO"
-           TextColor="White"
-           FontSize="70"
-           FontAttributes="Bold"
-           HorizontalTextAlignment="Center"
-           VerticalTextAlignment="Center"/>
+    <Image Source="logo"
+           HeightRequest="300"
+           WidthRequest="300"
+           HorizontalOptions="Center"
+           VerticalOptions="Center" />
 
 </ContentPage>

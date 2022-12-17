@@ -48,7 +48,7 @@
                            VerticalOptions="FillAndExpand"
                            HorizontalOptions="FillAndExpand">
                         <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                            <TapGestureRecognizer Command="{Binding UserCommand}" />
                         </Image.GestureRecognizers>
                     </Image>
                 </pkView:PancakeView>

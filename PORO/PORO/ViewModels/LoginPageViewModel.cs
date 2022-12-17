@@ -10,6 +10,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -80,10 +81,17 @@ namespace PORO.ViewModels
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
 
-            // Pass the handler to httpclient(from you are calling api)
-            HttpClient client = new HttpClient(clientHandler);
-            var response = await client.GetAsync(requestUri: url);
-            SignInResponse(response);
+            HttpClient client = new HttpClient();
+           
+            try
+            {
+                var response = await client.GetAsync(requestUri: url);
+                SignInResponse(response);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"ERROR {0}", ex.Message);
+            }
             await LoadingPopup.Instance.Hide();
         }
 
@@ -126,6 +134,8 @@ namespace PORO.ViewModels
                             UserModels.Password = list[i].Password;
                         }
                         Preferences.Set("userId", list[i].Id);
+                        Preferences.Set("email", list[i].Email);
+                        Preferences.Set("password", list[i].Password);
                         await Navigation.NavigateAsync($"/{ManagerPage.HomePage}", animated: false);
                         return;
                     }
