@@ -17,6 +17,7 @@ namespace PORO.ViewModels
 {
     public class SharePageViewModel : BaseViewModel
     {
+        #region Properties
         public ImageSource _imageReview;
         public ImageSource ImageReview
         {
@@ -28,6 +29,24 @@ namespace PORO.ViewModels
         {
             get => _publishModdel;
             set => SetProperty(ref _publishModdel, value);
+        }
+        private string _avatar;
+        public string Avatar
+        {
+            get => _avatar;
+            set => SetProperty(ref _avatar, value);
+        }
+        private string _userName;
+        public string UserName
+        {
+            get => _userName;
+            set => SetProperty(ref _userName, value);
+        }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
         }
         private string _itemDescription;
         public string Description
@@ -42,6 +61,8 @@ namespace PORO.ViewModels
             set => SetProperty(ref _date, value);
         }
         public string path { get; set; }
+        #endregion
+
         #region Constructors
         public SharePageViewModel(INavigationService navigationService)
             : base(navigationService)
@@ -65,6 +86,9 @@ namespace PORO.ViewModels
                     path = PublishModels.Image;
                     ImageReview = path;
                     Description = PublishModels.Description;
+                    Avatar = PublishModels.User.Avatar;
+                    UserName = PublishModels.User.UserName;
+                    Name = PublishModels.Name;
                 }
             }
         }
@@ -83,6 +107,7 @@ namespace PORO.ViewModels
             });
         }
         #endregion
+
         #region Share
         public ICommand ChangeCommand { get; set; }
         public async void ExcuteChange()
@@ -140,7 +165,7 @@ namespace PORO.ViewModels
         public ICommand BackCommand { get; set; }
         public async void ExcuteBack()
         {
-            await Navigation.NavigateAsync($"/{ManagerPage.HomePage}", animated: false);
+            await Navigation.GoBackAsync();
         }
         #endregion
     }
