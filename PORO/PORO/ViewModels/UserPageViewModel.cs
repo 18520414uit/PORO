@@ -111,6 +111,7 @@ namespace PORO.ViewModels
             var response = await client.GetAsync(requestUri: url);
             if (response.IsSuccessStatusCode)
             {
+                PublishModels = new ObservableCollection<PublishModel>();
                 var content = await response.Content.ReadAsStringAsync();
                 var list = JsonConvert.DeserializeObject<ObservableCollection<PublishModel>>(content);
                 var n = list.Count();
