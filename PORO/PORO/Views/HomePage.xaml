@@ -23,10 +23,10 @@
                     Grid.Column="0"
                     Aspect="AspectFit"
                     HeightRequest="60"
+                WidthRequest="60"
                     HorizontalOptions="Start"
                     Source="logo"
-                    VerticalOptions="Center"
-                    WidthRequest="150" />
+                    VerticalOptions="Center" />
             <Image
                     Grid.Column="1"
                     Aspect="AspectFill"

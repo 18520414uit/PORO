@@ -318,4 +318,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_more.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\logo.png" />
+  </ItemGroup>
 </Project>
