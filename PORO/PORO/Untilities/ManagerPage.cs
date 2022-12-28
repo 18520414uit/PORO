@@ -22,6 +22,7 @@ namespace PORO.Untilities
         public static readonly string LoginPage = "LoginPage";
         public static readonly string CloudPage = "CloudPage";
         public static readonly string UserPage = "UserPage";
+        public static readonly string ProfilePage = "ProfilePage";
         #endregion
 
         #region MultiplePages

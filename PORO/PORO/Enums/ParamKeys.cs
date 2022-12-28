@@ -13,6 +13,7 @@ namespace PORO.Enums
         ImageEditted,
         ImageToChange,
         UserLogin,
-        SKBitmap
+        SKBitmap,
+        UserProfile
     }
 }

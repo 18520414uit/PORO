@@ -52,6 +52,14 @@ namespace PORO.ViewModels
             AddCommand = new Command(TakePhoto);
             LogoutCommand = new Command(ExcuteLogout);
             UserCommand = new Command(ExcuteUser);
+            ViewUserCommand = new Command<PublishModel>(execute: (User) =>
+            {
+                ExcuteViewUser(User);
+            });
+            ViewDetailCommand = new Command<PublishModel>(execute: (ItemModel) =>
+            {
+                ExcuteViewDetail(ItemModel);
+            });
         }
         #endregion
 
@@ -255,7 +263,39 @@ namespace PORO.ViewModels
         public ICommand UserCommand { get; set; }
         public async void ExcuteUser()
         {
-            await Navigation.NavigateAsync(ManagerPage.UserPage, animated: false);
+            await Navigation.NavigateAsync(ManagerPage.ProfilePage, animated: false);
+        }
+        #endregion
+
+        #region ViewUserCommand
+        public ICommand ViewUserCommand { get; set; }
+        public async void ExcuteViewUser(PublishModel publish)
+        {
+            if (publish != null)
+            {
+                NavigationParameters param = new NavigationParameters
+                    {
+                        {ParamKeys.UserProfile.ToString(), publish.User}
+                    };
+                await Navigation.NavigateAsync(ManagerPage.UserPage, param, animated: false);
+            }
+
+        }
+        #endregion
+
+        #region ViewDetailCommand
+        public ICommand ViewDetailCommand { get; set; }
+        public async void ExcuteViewDetail(PublishModel publish)
+        {
+            if (publish != null)
+            {
+                NavigationParameters param = new NavigationParameters
+                {
+                    {ParamKeys.Share.ToString(), publish}
+                };
+                await Navigation.NavigateAsync(ManagerPage.SharePage, param);
+            }
+
         }
         #endregion
     }

@@ -14,17 +14,48 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid Margin="10, 0">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <base:HeaderView Grid.Row="0"
-                         PageHeaderTitle="Share"
-                         IsSendVisible="False"
-                         IsBackImageVisible="True"
-                         BackImageCommand="{Binding BackCommand}" />
-        <ScrollView Grid.Row="1">
+        <Grid Grid.Row="0"
+              VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0"
+                   Grid.Row="0"
+                   Aspect="AspectFit"
+                   HeightRequest="30"
+                   HorizontalOptions="Start"
+                   Source="ic_back"
+                   VerticalOptions="Center"
+                   WidthRequest="60">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="{Binding Name}"
+                   FontSize="16"
+                   TextColor="Black"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   Grid.Column="1"
+                   Grid.Row="0"/>
+            <BoxView BackgroundColor="Silver"
+                     HeightRequest="1"
+                     Grid.Row="1"
+                     Grid.ColumnSpan="3" />
+        </Grid>
+        <ScrollView Grid.Row="1"
+                    Margin="10, 0">
             <StackLayout>
                 <pkView:PancakeView CornerRadius="20">
                     <Image Source="{Binding ImageReview}"

@@ -100,7 +100,7 @@ namespace PORO.ViewModels.Base
         protected virtual async Task BackExecute()
         {  
             //await Navigation.ClearPopupStackAsync();
-            //await Navigation.GoBackAsync();
+            await Navigation.GoBackAsync();
         }
 
         #endregion

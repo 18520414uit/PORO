@@ -18,7 +18,7 @@ using Xamarin.Forms;
 
 namespace PORO.ViewModels
 {
-    public class UserPageViewModel : BaseViewModel
+    public class ProfilePageViewModel : BaseViewModel
     {
         #region Properties
         private ObservableCollection<PublishModel> _publishModel;
@@ -52,30 +52,19 @@ namespace PORO.ViewModels
             set => SetProperty(ref _description, value);
         }
         #endregion
-
         #region Contructors
-        public UserPageViewModel(INavigationService navigationService) : base(navigationService)
+        public ProfilePageViewModel(INavigationService navigationService) : base(navigationService)
         {
             PublishModels = new ObservableCollection<PublishModel>();
             User = new UserModel();
             ItemSelectedCommand = new Command(ListSelectedItem);
-            BackCommand = new Command(ExcuteBack);
         }
         #endregion
 
         #region Navigation
         public override void OnNavigatedNewTo(INavigationParameters parameters)
         {
-            if (parameters != null)
-            {
-                if (parameters.ContainsKey(ParamKeys.UserProfile.ToString()))
-                {
-                    User = (UserModel)parameters[ParamKeys.UserProfile.ToString()];
-                    Avatar = User.Avatar;
-                    Name = User.UserName;
-                    GetListTopic(User.Id);
-                }
-            }
+            GetUser();
         }
         #endregion
 
@@ -120,7 +109,7 @@ namespace PORO.ViewModels
                 var n = list.Count();
                 for (int i = n - 1; i >= 0; i--)
                 {
-                    if(list[i].User.Id == userID)
+                    if (list[i].User.Id == userID)
                     {
                         PublishModels.Add(new PublishModel
                         {
@@ -161,14 +150,6 @@ namespace PORO.ViewModels
                 await Navigation.NavigateAsync(ManagerPage.SharePage, param);
                 SelectedItemList = null;
             }
-        }
-        #endregion
-
-        #region Back
-        public ICommand BackCommand { get; set; }
-        public async void ExcuteBack()
-        {
-            await Navigation.GoBackAsync();
         }
         #endregion
     }

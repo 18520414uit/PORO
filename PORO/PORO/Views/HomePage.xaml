@@ -7,61 +7,70 @@
              xmlns:ffTransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
              xmlns:pkView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView">
-    <Grid Margin="10, 0">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0"
               VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
-            <Image
-                    Grid.Column="0"
-                    Aspect="AspectFit"
-                    HeightRequest="60"
-                WidthRequest="60"
-                    HorizontalOptions="Start"
-                    Source="logo"
-                    VerticalOptions="Center" />
-            <Image
-                    Grid.Column="1"
-                    Aspect="AspectFill"
-                    HorizontalOptions="Center"
-                    Source="ic_add"
-                    VerticalOptions="Center"
-                    WidthRequest="30">
+            <Image Grid.Column="0"
+                   Grid.Row="0"
+                   Aspect="AspectFit"
+                   HeightRequest="60"
+                   HorizontalOptions="Start"
+                   Source="logo"
+                   VerticalOptions="Center"
+                   WidthRequest="60" />
+            <Image Grid.Column="1"
+                   Grid.Row="0"
+                   Aspect="AspectFill"
+                   HorizontalOptions="Center"
+                   Source="ic_add"
+                   VerticalOptions="Center"
+                   WidthRequest="30">
                 <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding AddCommand}"/>
+                    <TapGestureRecognizer Command="{Binding AddCommand}" />
                 </Image.GestureRecognizers>
             </Image>
             <Grid Grid.Column="2"
-                  Padding="0, 15">
+                  Grid.Row="0">
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding UserCommand}" />
+                </Grid.GestureRecognizers>
                 <pkView:PancakeView CornerRadius="30"
                                     WidthRequest="30"
-                                    HeightRequest="30">
+                                    HeightRequest="30"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center">
                     <Image Aspect="AspectFill"
                            Source="{Binding Avatar}"
                            VerticalOptions="FillAndExpand"
-                           HorizontalOptions="FillAndExpand">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding UserCommand}" />
-                        </Image.GestureRecognizers>
-                    </Image>
+                           HorizontalOptions="FillAndExpand" />
                 </pkView:PancakeView>
             </Grid>
+            <BoxView BackgroundColor="Silver"
+                     HeightRequest="1"
+                     Grid.Row="1"
+                     Grid.ColumnSpan="3" />
         </Grid>
         <CollectionView
-                x:Name="collection"
-                Grid.Row="1"
-                ItemsSource="{Binding PublishModels}"
-                SelectedItem="{Binding SelectedItemList, Mode=TwoWay}"
-                SelectionChangedCommand="{Binding ItemSelectedCommand, Mode=TwoWay}"
-                SelectionMode="Single"
-                VerticalScrollBarVisibility="Never">
+                        x:Name="collection"
+                        Grid.Row="1"
+                        ItemsSource="{Binding PublishModels}"
+                        SelectedItem="{Binding SelectedItemList, Mode=TwoWay}"
+                        SelectionMode="Single"
+                        VerticalScrollBarVisibility="Never"
+                        Margin="10, 0">
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="30" HorizontalItemSpacing="5" />
             </CollectionView.ItemsLayout>
@@ -75,8 +84,12 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewUserCommand, Source={x:Reference collection}}"
+                                                      CommandParameter="{Binding .}" />
+                            </Grid.GestureRecognizers>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="5" />
                                 <ColumnDefinition Width="40" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
@@ -98,6 +111,10 @@
                         </Grid>
                         <pkView:PancakeView CornerRadius="20"
                                             Grid.Row="1">
+                            <pkView:PancakeView.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewDetailCommand, Source={x:Reference collection}}"
+                                                      CommandParameter="{Binding .}" />
+                            </pkView:PancakeView.GestureRecognizers>
                             <Image Aspect="AspectFill"
                                    Source="{Binding Image}"
                                    VerticalOptions="FillAndExpand"
