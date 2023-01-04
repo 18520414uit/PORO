@@ -17,7 +17,7 @@
                 <Setter Property="FontSize"
                         Value="10" />
                 <Setter Property="TextColor"
-                        Value="Black" />
+                        Value="White" />
                 <Setter Property="HorizontalTextAlignment"
                         Value="Start" />
                 <Setter Property="VerticalTextAlignment"
@@ -115,8 +115,6 @@
                   VerticalOptions="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <StackLayout Grid.Column="0"
@@ -132,53 +130,8 @@
                            VerticalTextAlignment="End"
                            FontSize="16" />
                 </StackLayout>
-                <StackLayout VerticalOptions="End"
-                             HorizontalOptions="Center"
-                             Grid.Column="1">
-                    <Image Source="ic_import"
-                           HeightRequest="15"
-                           HorizontalOptions="Center"
-                           VerticalOptions="End"
-                           Aspect="AspectFit" />
-                    <Label Text="Load Filter"
-                           TextColor="White"
-                           Grid.Column="0"
-                           HorizontalOptions="Start"
-                           VerticalOptions="End"
-                           FontSize="10" />
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="LoadFilter_Tapped" />
-                    </StackLayout.GestureRecognizers>
-                </StackLayout>
 
-                <StackLayout VerticalOptions="End"
-                             HorizontalOptions="Center"
-                             Grid.Column="2">
-                    <Image Source="ic_export"
-                           Grid.Column="2"
-                           HeightRequest="15"
-                           HorizontalOptions="Center"
-                           VerticalOptions="End"
-                           Aspect="AspectFit" />
-                    <Label Text="Save Filter"
-                           TextColor="White"
-                           Grid.Column="0"
-                           HorizontalOptions="Start"
-                           VerticalOptions="End"
-                           FontSize="10" />
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="SaveFilter_Tapped" />
-                    </StackLayout.GestureRecognizers>
-                </StackLayout>
-                <!--<Label Text="Preview"
-                   Grid.Column="1"
-                   FontSize="18"
-                   HorizontalOptions="CenterAndExpand"
-                   LineBreakMode="TailTruncation"
-                   TextColor="#343434"
-                   VerticalOptions="CenterAndExpand" />-->
-
-                <StackLayout Grid.Column="3"
+                <StackLayout Grid.Column="2"
                              VerticalOptions="End"
                              HorizontalOptions="FillAndExpand">
                     <StackLayout.GestureRecognizers>

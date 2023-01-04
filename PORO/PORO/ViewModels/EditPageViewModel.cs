@@ -2,6 +2,7 @@
 using PORO.Models;
 using PORO.Services;
 using PORO.Services.Database;
+using PORO.Untilities;
 using PORO.ViewModels.Base;
 using PORO.Views;
 using PORO.Views.Popups;
@@ -698,9 +699,6 @@ namespace PORO.ViewModels
             ColorValueText = ColorValue.ToString();
             BrightnessStopCommand = new Command(ExcuteBrightnessStop);
 
-            ImportCommand = new Command(ExcuteImport);
-            ExportCommand = new Command(ExcuteExport);
-
             DoneCommand = new Command(ExcuteDone);
             CancelCommand = new Command(ExcuteCancel);
         }
@@ -780,11 +778,6 @@ namespace PORO.ViewModels
             {
                 path = cropPath;
             }
-            //NavigationParameters param = new NavigationParameters
-            //{
-            //    {ParamKeys.ImageEditted.ToString(), dataModel}
-            //};
-            //await Navigation.NavigateAsync(ManagerPage.DrawPage, param, animated: false);
         }
         #endregion
 
@@ -850,34 +843,7 @@ namespace PORO.ViewModels
             editService.ResetService(path);
         }
         #endregion
-
-        #region Import
-        public ICommand ImportCommand { get; set; }
-        public async void ExcuteImport()
-        {
-            //Database database = new Database();
-            //EditImageModels = (List<EditImageModel>)database.GetAll();
-            //await ImportSettingPopup.Instance.Show(acceptCommand: new Command(async () =>
-            //{
-            //    EditImageModel = ImportSettingPopup.Instance.GetFilter();
-            //    if (EditImageModel != null && path != null)
-            //    {
-            //        var value = editService.Apply(path, EditImageModel);
-            //        pathOri = value;
-            //        ImageEdited = ImageSource.FromFile(value);
-            //    }
-            //}));
-        }
-        #endregion
-
-        #region Export
-        public ICommand ExportCommand { get; set; }
-        public async void ExcuteExport()
-        {
-            //await ExportSettingPopup.Instance.Show(editImageModel: EditImageModel);
-        }
-        #endregion
-
+        
         #region Cancel
         public ICommand CancelCommand { get; set; }
         public async void ExcuteCancel()
@@ -890,42 +856,16 @@ namespace PORO.ViewModels
         public ICommand DoneCommand { get; set; }
         public async void ExcuteDone()
         {
-            //await LoadingPopup.Instance.Show();
-            //await Task.Run(() =>
-            //{
-            //    path = EditPage.Instance.Done();
-            //    //SaveToDevice(path);
-            //    dataModel.filepath = path;
-            //    Device.BeginInvokeOnMainThread(async () =>
-            //    {
-            //        await LoadingPopup.Instance.Hide();
-            //        await MintedPopup.Instance.Show(isImage: true, chooseTagCommand: new Command(async () =>
-            //        {
-            //            NavigationParameters param = new NavigationParameters
-            //                {
-            //                    {ParamKeys.ImageUrl.ToString(), path}
-            //                };
-            //            await Navigation.NavigateAsync(ManagerPage.ChooseTagPage, param, animated: false);
-            //        }),
-            //         acceptCommand: new Command(async () =>
-            //         {
-            //             var PasswordPopup = new PasswordPopup(true);
-            //             await PasswordPopup.Show(forgotPasswordCommand: new Command(async () =>
-            //             {
-            //                 await Navigation.NavigateAsync(ManagerPage.FindAccountPage, animated: false);
-            //             }),
-            //             continueCommand: new Command(async () =>
-            //             {
-            //                 string accessToken = GetAccessToken();
-            //                 responseModel = await Processing1Popup.Instance.Show(path: path, password: PasswordPopup.Password, accessToken: accessToken);
-            //                 UploadPhotoResponse(responseModel);
-            //             })
-            //             );
-            //         }));
-            //    });
+            path = EditPage.Instance.Done();
+            SaveToDevice(path);
+            Database database = new Database();
+            dataModel.filepath = path;
+            NavigationParameters param = new NavigationParameters
+                {
+                   {ParamKeys.DataModel.ToString(), dataModel}
+                };
 
-            //});
-            //await LoadingPopup.Instance.Hide();
+            await Navigation.NavigateAsync(ManagerPage.ReviewPage, param, animated: false);
         }
         #endregion
 
