@@ -55,7 +55,7 @@ namespace PORO.ViewModels
                 {
                     {ParamKeys.ImageToMint.ToString(), dataModel}
                 };
-            await Navigation.NavigateAsync(ManagerPage.PublishPage, param);
+            await Navigation.NavigateAsync(ManagerPage.PublishPage, param, animated: false);
         }
         #endregion
         public string GetPath()
@@ -78,14 +78,14 @@ namespace PORO.ViewModels
                 {
                     {ParamKeys.ImageToEdit.ToString(), dataModel.filepath}
                 };
-            await Navigation.NavigateAsync(ManagerPage.EditPage, param);
+            await Navigation.NavigateAsync(ManagerPage.EditPage, param, animated: false);
         }
         #endregion
         #region Back
         public ICommand BackCommand { get; set; }
         public async void ExcuteBack()
         {
-            await Navigation.GoBackAsync();
+            await Navigation.GoBackAsync(animated: false);
         }
         #endregion
     }

@@ -36,7 +36,12 @@
                    Aspect="AspectFill"/>
         </pkView:PancakeView>
         <StackLayout Grid.Row="2"
-                     Margin="0, 30">
+                     Margin="0, 10">
+            <control:EntryCustom EntryBorderColor="Silver"
+                                 Placeholder="Name"
+                                 Text="{Binding Name}"
+                                 HeightRequest="40"
+                                 Style="{StaticResource entryStyle}" />
             <control:EntryCustom EntryBorderColor="Silver"
                                  Placeholder="Write description.."
                                  Text="{Binding Description}"

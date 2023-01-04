@@ -13,6 +13,7 @@ using Xamarin.Essentials;
 using PORO.Services;
 using System.Net.Http;
 using PORO.Untilities;
+using Newtonsoft.Json;
 
 namespace PORO.ViewModels
 {
@@ -33,11 +34,29 @@ namespace PORO.ViewModels
             get => _publishModdel;
             set => SetProperty(ref _publishModdel, value);
         }
+        private UserModel _userModel;
+        public UserModel UserModel
+        {
+            get => _userModel;
+            set => SetProperty(ref _userModel, value);
+        }
         private string _itemDescription;
         public string Description
         {
             get => _itemDescription;
             set => SetProperty(ref _itemDescription, value);
+        }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+        private string _userId;
+        public string UserId
+        {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
         }
         private DatabaseModel dataModel = new DatabaseModel();
         #endregion
@@ -64,15 +83,44 @@ namespace PORO.ViewModels
                     ImageReview = ImageSource.FromFile(path);
                 }
             }
+            UserId = Preferences.Get("userId", null);
+            GetUser(UserId);
         }
         #endregion
+
+        #region Get User
+        public async void GetUser(string userID)
+        {
+            await LoadingPopup.Instance.Show();
+            var url = ApiUrl.GetUser(userID);
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            HttpClient client = new HttpClient(clientHandler);
+            var response = await client.GetAsync(requestUri: url);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<UserModel>(content);
+                UserModel = user;
+            }
+            await LoadingPopup.Instance.Hide();
+        }
+        #endregion
+
         #region PostImage
         public ICommand PostCommand { get; set; }
         public async void ExcutePost()
         {
-            var userId = Preferences.Get("userId", 0);
+            var userId = UserId;
+            var count = Preferences.Get("count", 1);
             #region CheckEmpty
-            if (string.IsNullOrEmpty(Description))
+            if (string.IsNullOrEmpty(Name))
+            {
+                await MessagePopup.Instance.Show("Please Enter Name");
+                return;
+            }
+            else if (string.IsNullOrEmpty(Description))
             {
                 await MessagePopup.Instance.Show("Please Enter Description");
                 return;
@@ -80,11 +128,12 @@ namespace PORO.ViewModels
             #endregion
             PublishModels = new PublishModel()
             {
-                Id = "1",
-                //UserId = userId,
+                Id = (count + 1).ToString(),
+                User = UserModel,
+                Name = Name,
                 Description = Description,
                 Image = path,
-                Name = DateTime.Now.ToString()
+                //Name = DateTime.Now.ToString()
             };
             await ConfirmPopup.Instance.Show(message: "Confirm Pulish",
                       acceptCommand: new Command(async () =>

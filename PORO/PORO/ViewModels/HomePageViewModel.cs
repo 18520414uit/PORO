@@ -111,6 +111,7 @@ namespace PORO.ViewModels
                 var content = await response.Content.ReadAsStringAsync();
                 var list = JsonConvert.DeserializeObject<ObservableCollection<PublishModel>>(content);
                 var n = list.Count();
+                Preferences.Set("count", n);
                 for (int i = n - 1; i >= 0; i--)
                 {
                     PublishModels.Add(new PublishModel
@@ -201,7 +202,7 @@ namespace PORO.ViewModels
                    {ParamKeys.DataModel.ToString(), dataModel}
                 };
 
-                await Navigation.NavigateAsync(ManagerPage.ReviewPage, param);
+                await Navigation.NavigateAsync(ManagerPage.ReviewPage, param, animated: false);
             }),
             galleryCommand: new Command(async () =>
             {
@@ -238,7 +239,7 @@ namespace PORO.ViewModels
                    {ParamKeys.DataModel.ToString(), dataModel}
                 };
 
-                await Navigation.NavigateAsync(ManagerPage.ReviewPage, param);
+                await Navigation.NavigateAsync(ManagerPage.ReviewPage, param, animated: false);
             })
             );
         }
@@ -293,7 +294,7 @@ namespace PORO.ViewModels
                 {
                     {ParamKeys.Share.ToString(), publish}
                 };
-                await Navigation.NavigateAsync(ManagerPage.SharePage, param);
+                await Navigation.NavigateAsync(ManagerPage.SharePage, param, animated: false);
             }
 
         }

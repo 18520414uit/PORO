@@ -51,6 +51,12 @@ namespace PORO.ViewModels
             get => _description;
             set => SetProperty(ref _description, value);
         }
+        private string _userId;
+        public string UserId
+        {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
+        }
         #endregion
         #region Contructors
         public ProfilePageViewModel(INavigationService navigationService) : base(navigationService)
@@ -58,21 +64,23 @@ namespace PORO.ViewModels
             PublishModels = new ObservableCollection<PublishModel>();
             User = new UserModel();
             ItemSelectedCommand = new Command(ListSelectedItem);
+            MoreCommand = new Command(ExecuteMore);
         }
         #endregion
 
         #region Navigation
         public override void OnNavigatedNewTo(INavigationParameters parameters)
         {
-            GetUser();
+            UserId = Preferences.Get("userId", null);
+            GetUser(UserId);
+            GetListTopic(UserId);
         }
         #endregion
 
         #region Get User
-        public async void GetUser()
+        public async void GetUser(string userID)
         {
             await LoadingPopup.Instance.Show();
-            string userID = Preferences.Get("userId", null);
             var url = ApiUrl.GetUser(userID);
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
@@ -150,6 +158,25 @@ namespace PORO.ViewModels
                 await Navigation.NavigateAsync(ManagerPage.SharePage, param);
                 SelectedItemList = null;
             }
+        }
+        #endregion
+
+        #region More
+        public ICommand MoreCommand { get; set; }
+        public async void ExecuteMore()
+        {
+            await ProfileSettingPopup.Instance.Show(logoutCommand: new Command(async() => 
+            {
+                await ConfirmPopup.Instance.Show(message: "Confirm LogOut",
+                      acceptCommand: new Command(async () =>
+                      {
+                          Preferences.Set("email", null);
+                          Preferences.Set("password", null);
+                          Preferences.Set("userId", 0);
+                          await Navigation.NavigateAsync(ManagerPage.LoginPage, animated: false);
+                      }));
+            }));
+                
         }
         #endregion
     }

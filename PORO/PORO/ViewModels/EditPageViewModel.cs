@@ -945,7 +945,7 @@ namespace PORO.ViewModels
                 if (data != null)
                 {
 
-                    await fileService.SaveImageAsync(data, $"PORO{DateTime.Now:dd.MM.yyyy HH-mm-ss}.jpeg", "Shuttermint");
+                    await fileService.SaveImageAsync(data, $"ImgPack{DateTime.Now:dd.MM.yyyy HH-mm-ss}.jpeg", "ImgPack");
                 }
                 data = null;
             }
