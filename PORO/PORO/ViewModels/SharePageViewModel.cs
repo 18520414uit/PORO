@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -100,11 +101,27 @@ namespace PORO.ViewModels
         {
             if (path == null)
                 return;
-            await Share.RequestAsync(new ShareFileRequest
+            if (IsValidUrl(path))
             {
-                Title = "Share",
-                File = new ShareFile(path)
-            });
+                await Share.RequestAsync(new ShareTextRequest
+                {
+                    Uri = path,
+                    Title = "Share "
+                });
+            }
+            else
+            {
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Share",
+                    File = new ShareFile(path)
+                });
+            }
+            
+        }
+        private bool IsValidUrl(string url)
+        {
+            return (Uri.IsWellFormedUriString(url, UriKind.Absolute));
         }
         #endregion
 

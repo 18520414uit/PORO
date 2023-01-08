@@ -85,12 +85,16 @@
                            HorizontalTextAlignment="Start"
                            VerticalTextAlignment="Center"
                            Grid.Column="1" />
-                    <Image Source="ic_more"
+                    <Image Source="ic_share"
                            HeightRequest="30"
                            WidthRequest="30"
                            HorizontalOptions="End"
                            VerticalOptions="Center"
-                           Grid.Column="2"/>
+                           Grid.Column="2">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ShareCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
                 </Grid>
                 <StackLayout Margin="0, 10">
                     <Label Text="{Binding Name}"
