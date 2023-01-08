@@ -86,6 +86,7 @@ namespace PORO.ViewModels
         }
 
         #endregion
+
         #region Get User
         public async void GetUser(string userID)
         {

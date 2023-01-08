@@ -30,6 +30,7 @@ namespace PORO.ViewModels
             Instance = this;
             PublishCommand = new Command(ExcutePublish);
             EditCommand = new Command(ExcuteEdit);
+            BackCommand = new Command(ExcuteBack);
         }
 
         #region Navigation
@@ -44,6 +45,14 @@ namespace PORO.ViewModels
                     ImageReview = ImageSource.FromFile(path);
                 }
             }
+        }
+        #endregion
+
+        #region Back
+        public ICommand BackCommand { get; set; }
+        public async void ExcuteBack()
+        {
+            await Navigation.GoBackAsync(animated: false);
         }
         #endregion
 
@@ -79,13 +88,6 @@ namespace PORO.ViewModels
                     {ParamKeys.ImageToEdit.ToString(), dataModel.filepath}
                 };
             await Navigation.NavigateAsync(ManagerPage.EditPage, param, animated: false);
-        }
-        #endregion
-        #region Back
-        public ICommand BackCommand { get; set; }
-        public async void ExcuteBack()
-        {
-            await Navigation.GoBackAsync(animated: false);
         }
         #endregion
     }
