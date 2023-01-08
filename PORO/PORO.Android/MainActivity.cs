@@ -26,6 +26,7 @@ namespace PORO.Droid
             Stormlion.ImageCropper.Droid.Platform.Init();
             Xamarin.Essentials.Platform.Init(Application);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
+            BitooBitImageEditor.Droid.Platform.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());

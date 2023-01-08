@@ -1,4 +1,5 @@
-﻿using PORO.Controls;
+﻿using BitooBitImageEditor;
+using PORO.Controls;
 using PORO.Enums;
 using PORO.Models;
 using PORO.Services;
@@ -17,6 +18,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using BitmapStretch = PORO.Controls.BitmapStretch;
 
 namespace PORO.Views
 {
@@ -27,7 +29,6 @@ namespace PORO.Views
         public static EditPage Instance { get; private set; }
         public string Path { get; set; }
         public string CropPath { get; set; }
-        private readonly Assembly assembly;
         IFileService fileService = DependencyService.Get<IFileService>();
         SKBitmap bitmap = new SKBitmap();
         SKBitmap currentBitmap = new SKBitmap();
@@ -2239,355 +2240,171 @@ namespace PORO.Views
 
         #endregion
 
-        //#region Add Text
+        #region Add Text
 
-        //#region Properties
-        //public bool ConfigVisible { get; set; }
-        //public ImageEditorConfig Config { get; set; } = new ImageEditorConfig();
-        //public bool CanAddStickers { get; set; } = true;
-        //public int? OutImageHeight { get; set; } = null;
-        //public int? OutImageWidht { get; set; } = null;
-        //public bool UseSampleImage { get; set; } = true;
+        #region Properties
+        public bool ConfigVisible { get; set; }
+        public ImageEditorConfig Config { get; set; } = new ImageEditorConfig();
+        public bool CanAddStickers { get; set; } = true;
+        public int? OutImageHeight { get; set; } = null;
+        public int? OutImageWidht { get; set; } = null;
+        public bool UseSampleImage { get; set; } = true;
 
-        //private readonly Assembly assembly;
-        //private List<SKBitmapImageSource> stickers;
-        //private List<SKBitmapImageSource> signatures;
-        //private int stickersCount = 100;
+        private readonly Assembly assembly;
+        private List<SKBitmapImageSource> stickers;
+        private List<SKBitmapImageSource> signatures;
+        private int stickersCount = 100;
 
-        //public List<BBAspect> Aspects { get; } = new List<BBAspect> { BBAspect.Auto, BBAspect.AspectFill, BBAspect.AspectFit, BBAspect.Fill };
-
-
-        //public List<BackgroundType> BackgroundTypes { get; } = new List<BackgroundType> { BackgroundType.Transparent, BackgroundType.StretchedImage, BackgroundType.Color };
-        //public List<SKColor> Colors { get; } = new List<SKColor> { SKColors.Red, SKColors.Green, SKColors.Blue };
-        //#endregion
-        //private void GetBitmaps(int maxCount)
-        //{
-        //    List<SKBitmapImageSource> _stickers = null;
-
-        //    var applicationTypeInfo = Application.Current.GetType().GetTypeInfo();
-        //    string[] resourceIDs = assembly.GetManifestResourceNames();
-        //    int i = 0;
-        //    foreach (string resourceID in resourceIDs)
-        //    {
-        //        if (resourceID.Contains("sticker") && resourceID.EndsWith(".png"))
-        //        {
-        //            if (_stickers == null)
-        //                _stickers = new List<SKBitmapImageSource>();
-
-        //            using (Stream stream = assembly.GetManifestResourceStream(resourceID))
-        //            {
-        //                _stickers.Add(SKBitmap.Decode(stream));
-        //            }
-        //        }
-        //        i++;
-        //        if (i > maxCount)
-        //            break;
-        //    }
-        //    stickers = _stickers;
-        //}
+        public List<BBAspect> Aspects { get; } = new List<BBAspect> { BBAspect.Auto, BBAspect.AspectFill, BBAspect.AspectFit, BBAspect.Fill };
 
 
-        //private async void AddText_Click(object sender, EventArgs e)
-        //{
-        //    var display = DeviceDisplay.MainDisplayInfo;
-        //    //if (!(Config?.Stickers?.Count > 0) && CanAddStickers)
-        //    GetBitmaps(stickersCount);
-        //    Config = new ImageEditorConfig(backgroundType: BackgroundType.StretchedImage, outImageHeight: (int)display.Height, outImageWidht: (int)display.Width, aspect: BBAspect.Auto, canTransformMainBitmap: false, stickers: stickers);
-        //    try
-        //    {
-        //        Indicator.IsRunning = true;
-        //        EditGrid.IsEnabled = false;
-        //        await Task.Run(() =>
-        //        {
-        //            Config.Stickers = CanAddStickers ? stickers : null;
-        //            Config.SetOutImageSize(OutImageHeight, OutImageWidht);
+        public List<BackgroundType> BackgroundTypes { get; } = new List<BackgroundType> { BackgroundType.Transparent, BackgroundType.StretchedImage, BackgroundType.Color };
+        public List<SKColor> Colors { get; } = new List<SKColor> { SKColors.Red, SKColors.Green, SKColors.Blue };
+        #endregion
+        private void GetBitmaps(int maxCount)
+        {
+            List<SKBitmapImageSource> _stickers = null;
 
-        //            //var skBitmap = GetBitmap();
-        //            //string url = MintPhotoPageViewModel.Instance.GetPath();
-        //            //if (skBitmap == null)
-        //            //{
-        //            //    using (Stream stream = File.OpenRead(url))
-        //            //    {
-        //            //        skBitmap = SKBitmap.Decode(stream);
-        //            //        var orientation = CheckOrigintation(url);
-        //            //        if (orientation == SKEncodedOrigin.BottomRight || orientation == SKEncodedOrigin.RightTop || orientation == SKEncodedOrigin.LeftBottom)
-        //            //        {
-        //            //            SKBitmap orientedWExif = HandleOrientation(skBitmap, orientation);
+            var applicationTypeInfo = Application.Current.GetType().GetTypeInfo();
+            string[] resourceIDs = assembly.GetManifestResourceNames();
+            int i = 0;
+            foreach (string resourceID in resourceIDs)
+            {
+                if (resourceID.Contains("sticker") && resourceID.EndsWith(".png"))
+                {
+                    if (_stickers == null)
+                        _stickers = new List<SKBitmapImageSource>();
 
-        //            //            SKBitmap newBitmap = new SKBitmap(orientedWExif.Width, orientedWExif.Height);
-        //            //            using (SKCanvas newCanvas = new SKCanvas(newBitmap))
-        //            //            {
-        //            //                newCanvas.Clear();
-        //            //                newCanvas.DrawBitmap(bitmap: orientedWExif, 0, 0);
-        //            //            }
-        //            //            skBitmap = newBitmap;
-        //            //        }
-        //            //    }
-        //            //}
+                    using (Stream stream = assembly.GetManifestResourceStream(resourceID))
+                    {
+                        _stickers.Add(SKBitmap.Decode(stream));
+                    }
+                }
+                i++;
+                if (i > maxCount)
+                    break;
+            }
+            stickers = _stickers;
+        }
 
-        //            Device.BeginInvokeOnMainThread(async () =>
-        //            {
-        //                Indicator.IsRunning = false;
-        //                EditGrid.IsEnabled = true;
-        //                var skBitmap = GetBitmap();
-        //                var data = await ImageEditor.Instance.GetEditedImage(skBitmap, Config);
-        //                if (data != null)
-        //                {
-        //                    var newBitmap = SKBitmap.Decode(data);
-        //                    //var sKBitmap = MergeBitmap(skBitmap, newBitmap);
-        //                    originalBitmap = newBitmap;
-        //                    bitmap = newBitmap;
+        private SKBitmap MergeBitmap(SKBitmap sKBitmap, SKBitmap textBitmap)
+        {
+            SKBitmap newBitmap = new SKBitmap(sKBitmap.Width, sKBitmap.Height);
+            using (SKCanvas newCanvas = new SKCanvas(newBitmap))
+            {
+                newCanvas.Clear();
+                newCanvas.DrawBitmap(bitmap: sKBitmap, 0, 0);
+            }
+            var dstInfo1 = new SKImageInfo(newBitmap.Width, newBitmap.Height);
+            resizedBitmap = textBitmap.Resize(dstInfo1, SKBitmapResizeMethod.Hamming);
 
-        //                    completedPolylines.Clear();
-        //                    drawView.InvalidateSurface();
+            if (newBitmap != null)
+            {
+                int offset = newBitmap.Width / 2 - resizedBitmap.Width / 2;
+                int offsetTop = newBitmap.Height / 2 - resizedBitmap.Height / 2;
 
-        //                    brightness = DEFAULT_BRIGHTNESS;
-        //                    contrast = DEFAULT_CONTRAST;
-        //                    whitebalance = DEFAULT_WHITEBALANCE;
-        //                    currentFilterOption = new FilterOption
-        //                    {
-        //                        ColorContrast = contrast,
-        //                        ColorBrightness = brightness,
-        //                        ColorWhiteBalance = whitebalance,
-        //                        GrayContrast = grayscale_contrast,
-        //                        GrayBrightness = grayscale_brightness,
-        //                        BlackWhiteContrast = blackwhite_contrast
-        //                    };
-        //                    paint.ColorFilter = FilterMatrix.GetColorFilterMatrix(currentFilterOption);
-        //                    canvasView.InvalidateSurface();
-        //                    data = null;
-        //                }
-        //            });
-        //        });
-        //    }
-        //    catch (Exception ex)
-        //    {
+                using (SKCanvas canvas = new SKCanvas(newBitmap))
+                {
+                    canvas.DrawBitmap(resizedBitmap, SKRect.Create(offset, offsetTop, resizedBitmap.Width, resizedBitmap.Height));
+                }
+            }
+            return newBitmap;
+        }
+        #endregion
 
-        //    }
-        //}
-        //private SKBitmap MergeBitmap(SKBitmap sKBitmap, SKBitmap textBitmap)
-        //{
-        //    SKBitmap newBitmap = new SKBitmap(sKBitmap.Width, sKBitmap.Height);
-        //    using (SKCanvas newCanvas = new SKCanvas(newBitmap))
-        //    {
-        //        newCanvas.Clear();
-        //        newCanvas.DrawBitmap(bitmap: sKBitmap, 0, 0);
-        //    }
-        //    var dstInfo1 = new SKImageInfo(newBitmap.Width, newBitmap.Height);
-        //    resizedBitmap = textBitmap.Resize(dstInfo1, SKBitmapResizeMethod.Hamming);
+        #region Crop
 
-        //    if (newBitmap != null)
-        //    {
-        //        int offset = newBitmap.Width / 2 - resizedBitmap.Width / 2;
-        //        int offsetTop = newBitmap.Height / 2 - resizedBitmap.Height / 2;
+        private async void Crop_Click(object sender, EventArgs e)
+        {
 
-        //        using (SKCanvas canvas = new SKCanvas(newBitmap))
-        //        {
-        //            canvas.DrawBitmap(resizedBitmap, SKRect.Create(offset, offsetTop, resizedBitmap.Width, resizedBitmap.Height));
-        //        }
-        //    }
-        //    return newBitmap;
-        //}
-        //#endregion
+            var display = DeviceDisplay.MainDisplayInfo;
+            if (!(Config?.Stickers?.Count > 0) && CanAddStickers)
+                GetBitmaps(stickersCount);
+            Config = new ImageEditorConfig(backgroundType: BackgroundType.StretchedImage, outImageHeight: (int)display.Height, outImageWidht: (int)display.Width, aspect: BBAspect.Auto, canTransformMainBitmap: false, stickers: stickers);
+            try
+            {
+                Indicator.IsRunning = true;
+                EditGrid.IsEnabled = false;
+                await Task.Run(() =>
+                {
+                    Config.Stickers = CanAddStickers ? stickers : null;
+                    Config.SetOutImageSize(OutImageHeight, OutImageWidht);
 
-        //#region Signature
-        //private async void GetSignatureBitmaps()
-        //{
-        //    List<SKBitmapImageSource> _signature = null;
-        //    var deviceId = Preferences.Get("deviceId", null);
-        //    SessionDatabase sessionDatabase = new SessionDatabase();
-        //    SessionModel = sessionDatabase.Get(deviceId);
-        //    if (_signature == null)
-        //        _signature = new List<SKBitmapImageSource>();
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        Indicator.IsRunning = false;
+                        EditGrid.IsEnabled = true;
+                        var skBitmap = GetBitmap();
+                        var data = await ImageEditor.Instance.GetCropperImage(skBitmap, Config);
+                        if (data != null)
+                        {
+                            var newBitmap = SKBitmap.Decode(data);
+                            //var sKBitmap = MergeBitmap(skBitmap, newBitmap);
+                            originalBitmap = newBitmap;
+                            bitmap = newBitmap;
 
-        //    if (SessionModel.Signature == null)
-        //    {
-        //        await MessagePopup.Instance.Show(TranslateExtension.Get("DoNotHaveSignature"));
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        using (Stream stream = new MemoryStream(SessionModel.Signature))
-        //        {
-        //            _signature.Add(SKBitmap.Decode(stream));
-        //        }
-        //        signatures = _signature;
-        //    }
-        //}
-        //private async void Signature_Click(object sender, EventArgs e)
-        //{
-        //    var display = DeviceDisplay.MainDisplayInfo;
-        //    //if (!(Config?.Stickers?.Count > 0) && CanAddStickers)
-        //    GetSignatureBitmaps();
-        //    if (signatures != null)
-        //    {
-        //        Config = new ImageEditorConfig(backgroundType: BackgroundType.StretchedImage, outImageHeight: (int)display.Height, outImageWidht: (int)display.Width, aspect: BBAspect.Auto, canTransformMainBitmap: false, stickers: signatures);
-        //        try
-        //        {
-        //            Indicator.IsRunning = true;
-        //            EditGrid.IsEnabled = false;
-        //            await Task.Run(() =>
-        //            {
-        //                Config.Stickers = CanAddStickers ? signatures : null;
-        //                Config.SetOutImageSize(OutImageHeight, OutImageWidht);
+                            completedPolylines.Clear();
+                            drawView.InvalidateSurface();
 
-        //                var skBitmap = GetBitmap();
-        //                string url = MintPhotoPageViewModel.Instance.GetPath();
-        //                if (skBitmap == null)
-        //                {
-        //                    using (Stream stream = File.OpenRead(url))
-        //                    {
-        //                        skBitmap = SKBitmap.Decode(stream);
-        //                        var orientation = CheckOrigintation(url);
-        //                        if (orientation == SKEncodedOrigin.BottomRight || orientation == SKEncodedOrigin.RightTop || orientation == SKEncodedOrigin.LeftBottom)
-        //                        {
-        //                            SKBitmap orientedWExif = HandleOrientation(skBitmap, orientation);
+                            brightness = DEFAULT_BRIGHTNESS;
+                            contrast = DEFAULT_CONTRAST;
+                            whitebalance = DEFAULT_WHITEBALANCE;
+                            currentFilterOption = new FilterOption
+                            {
+                                ColorContrast = contrast,
+                                ColorBrightness = brightness,
+                                ColorWhiteBalance = whitebalance,
+                                GrayContrast = grayscale_contrast,
+                                GrayBrightness = grayscale_brightness,
+                                BlackWhiteContrast = blackwhite_contrast
+                            };
+                            paint.ColorFilter = FilterMatrix.GetColorFilterMatrix(currentFilterOption);
+                            canvasView.InvalidateSurface();
+                            data = null;
+                        }
+                    });
+                });
 
-        //                            SKBitmap newBitmap = new SKBitmap(orientedWExif.Width, orientedWExif.Height);
-        //                            using (SKCanvas newCanvas = new SKCanvas(newBitmap))
-        //                            {
-        //                                newCanvas.Clear();
-        //                                newCanvas.DrawBitmap(bitmap: orientedWExif, 0, 0);
-        //                            }
-        //                            skBitmap = newBitmap;
-        //                        }
-        //                    }
-        //                }
-        //                Device.BeginInvokeOnMainThread(async () =>
-        //                {
-        //                    Indicator.IsRunning = false;
-        //                    EditGrid.IsEnabled = true;
-        //                    var data = await ImageEditor.Instance.GetSignatureImage(skBitmap, Config);
-        //                    if (data != null)
-        //                    {
-        //                        var newBitmap = SKBitmap.Decode(data);
-        //                        //var sKBitmap = MergeBitmap(skBitmap, newBitmap);
-        //                        originalBitmap = newBitmap;
-        //                        bitmap = newBitmap;
+                #region Cropper
+                //new ImageCropper()
+                //{
+                //    PageTitle = "Classic",
+                //    Success = (croppedPath) =>
+                //    {
+                //        Device.BeginInvokeOnMainThread(() =>
+                //        {
+                //            CropPath = croppedPath;
+                //            using (Stream stream = File.OpenRead(CropPath))
+                //            {
+                //                bitmap = SKBitmap.Decode(stream);
+                //                originalBitmap = bitmap;
+                //                var orientation = CheckOrigintation(Path);
+                //                if (orientation == SKEncodedOrigin.BottomRight || orientation == SKEncodedOrigin.RightTop || orientation == SKEncodedOrigin.LeftBottom)
+                //                {
+                //                    SKBitmap orientedWExif = HandleOrientation(bitmap, orientation);
 
-        //                        completedPolylines.Clear();
-        //                        drawView.InvalidateSurface();
+                //                    SKBitmap newBitmap = new SKBitmap(orientedWExif.Width, orientedWExif.Height);
+                //                    using (SKCanvas newCanvas = new SKCanvas(newBitmap))
+                //                    {
+                //                        newCanvas.Clear();
+                //                        newCanvas.DrawBitmap(bitmap: orientedWExif, 0, 0);
+                //                    }
+                //                    bitmap = newBitmap;
+                //                    originalBitmap = newBitmap;
+                //                }
+                //            }
+                //            canvasView.InvalidateSurface();
+                //        });
+                //    }
+                //}.Show(this, Path);
+                #endregion
+            }
+            catch (Exception ex)
+            {
 
-        //                        brightness = DEFAULT_BRIGHTNESS;
-        //                        contrast = DEFAULT_CONTRAST;
-        //                        whitebalance = DEFAULT_WHITEBALANCE;
-        //                        currentFilterOption = new FilterOption
-        //                        {
-        //                            ColorContrast = contrast,
-        //                            ColorBrightness = brightness,
-        //                            ColorWhiteBalance = whitebalance,
-        //                            GrayContrast = grayscale_contrast,
-        //                            GrayBrightness = grayscale_brightness,
-        //                            BlackWhiteContrast = blackwhite_contrast
-        //                        };
-        //                        paint.ColorFilter = FilterMatrix.GetColorFilterMatrix(currentFilterOption);
-        //                        canvasView.InvalidateSurface();
-        //                        data = null;
-        //                    }
-        //                });
-        //            });
-        //        }
-        //        catch (Exception ex)
-        //        {
-
-        //        }
-        //    }
-        //}
-        //#endregion
-
-        //#region Crop
-
-        //private async void Crop_Click(object sender, EventArgs e)
-        //{
-
-        //    var display = DeviceDisplay.MainDisplayInfo;
-        //    if (!(Config?.Stickers?.Count > 0) && CanAddStickers)
-        //        GetBitmaps(stickersCount);
-        //    Config = new ImageEditorConfig(backgroundType: BackgroundType.StretchedImage, outImageHeight: (int)display.Height, outImageWidht: (int)display.Width, aspect: BBAspect.Auto, canTransformMainBitmap: false, stickers: stickers);
-        //    try
-        //    {
-        //        Indicator.IsRunning = true;
-        //        EditGrid.IsEnabled = false;
-        //        await Task.Run(() =>
-        //        {
-        //            Config.Stickers = CanAddStickers ? stickers : null;
-        //            Config.SetOutImageSize(OutImageHeight, OutImageWidht);
-
-        //            Device.BeginInvokeOnMainThread(async () =>
-        //            {
-        //                Indicator.IsRunning = false;
-        //                EditGrid.IsEnabled = true;
-        //                var skBitmap = GetBitmap();
-        //                var data = await ImageEditor.Instance.GetCropperImage(skBitmap, Config);
-        //                if (data != null)
-        //                {
-        //                    var newBitmap = SKBitmap.Decode(data);
-        //                    //var sKBitmap = MergeBitmap(skBitmap, newBitmap);
-        //                    originalBitmap = newBitmap;
-        //                    bitmap = newBitmap;
-
-        //                    completedPolylines.Clear();
-        //                    drawView.InvalidateSurface();
-
-        //                    brightness = DEFAULT_BRIGHTNESS;
-        //                    contrast = DEFAULT_CONTRAST;
-        //                    whitebalance = DEFAULT_WHITEBALANCE;
-        //                    currentFilterOption = new FilterOption
-        //                    {
-        //                        ColorContrast = contrast,
-        //                        ColorBrightness = brightness,
-        //                        ColorWhiteBalance = whitebalance,
-        //                        GrayContrast = grayscale_contrast,
-        //                        GrayBrightness = grayscale_brightness,
-        //                        BlackWhiteContrast = blackwhite_contrast
-        //                    };
-        //                    paint.ColorFilter = FilterMatrix.GetColorFilterMatrix(currentFilterOption);
-        //                    canvasView.InvalidateSurface();
-        //                    data = null;
-        //                }
-        //            });
-        //        });
-
-        //        #region Cropper
-        //        //new ImageCropper()
-        //        //{
-        //        //    PageTitle = "Classic",
-        //        //    Success = (croppedPath) =>
-        //        //    {
-        //        //        Device.BeginInvokeOnMainThread(() =>
-        //        //        {
-        //        //            CropPath = croppedPath;
-        //        //            using (Stream stream = File.OpenRead(CropPath))
-        //        //            {
-        //        //                bitmap = SKBitmap.Decode(stream);
-        //        //                originalBitmap = bitmap;
-        //        //                var orientation = CheckOrigintation(Path);
-        //        //                if (orientation == SKEncodedOrigin.BottomRight || orientation == SKEncodedOrigin.RightTop || orientation == SKEncodedOrigin.LeftBottom)
-        //        //                {
-        //        //                    SKBitmap orientedWExif = HandleOrientation(bitmap, orientation);
-
-        //        //                    SKBitmap newBitmap = new SKBitmap(orientedWExif.Width, orientedWExif.Height);
-        //        //                    using (SKCanvas newCanvas = new SKCanvas(newBitmap))
-        //        //                    {
-        //        //                        newCanvas.Clear();
-        //        //                        newCanvas.DrawBitmap(bitmap: orientedWExif, 0, 0);
-        //        //                    }
-        //        //                    bitmap = newBitmap;
-        //        //                    originalBitmap = newBitmap;
-        //        //                }
-        //        //            }
-        //        //            canvasView.InvalidateSurface();
-        //        //        });
-        //        //    }
-        //        //}.Show(this, Path);
-        //        #endregion
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
-        //#endregion
+            }
+        }
+        #endregion
 
         #region Save Filter
         private async void LoadFilter_Tapped(object sender, EventArgs e)

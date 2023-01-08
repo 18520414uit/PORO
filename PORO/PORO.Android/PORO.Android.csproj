@@ -45,6 +45,12 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BitooBitImageEditor">
+      <HintPath>..\BitooImageEditor\BitooBitImageEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="BitooBitImageEditor.Droid">
+      <HintPath>..\BitooImageEditor\BitooBitImageEditor.Droid.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

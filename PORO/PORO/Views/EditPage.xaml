@@ -694,19 +694,69 @@
                 </Grid>
 
             </Grid>
-            <ScrollView Grid.Row="3"
+            <Grid Grid.Row="3"
+                  Margin="3"
+                  VerticalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CanvasCommand}" />
+                    </StackLayout.GestureRecognizers>
+                    <Image Source="ic_color"
+                           WidthRequest="20"
+                           Aspect="AspectFit" />
+                    <Label Text="Canvas"
+                           Style="{StaticResource EditLabelStyle}" />
+                    <BoxView Style="{StaticResource EditBoxviewStyle}"
+                             IsVisible="{Binding CanvasVisible}" />
+                </StackLayout>
+                <StackLayout Grid.Column="1">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding FilterCommand}" />
+                    </StackLayout.GestureRecognizers>
+                    <Image Source="ic_filter"
+                           WidthRequest="20"
+                           Aspect="AspectFit" />
+                    <Label Text="Studio"
+                           Style="{StaticResource EditLabelStyle}" />
+                    <BoxView Style="{StaticResource EditBoxviewStyle}"
+                             IsVisible="{Binding StudioVisible}" />
+                </StackLayout>
+                <StackLayout Grid.Column="2">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding DrawCommand}" />
+                    </StackLayout.GestureRecognizers>
+                    <Image Source="ic_draw"
+                           WidthRequest="20"
+                           Aspect="AspectFit" />
+                    <Label Text="Drawing"
+                           Style="{StaticResource EditLabelStyle}" />
+                    <BoxView Style="{StaticResource EditBoxviewStyle}"
+                             IsVisible="{Binding DrawVisible}" />
+                </StackLayout>
+                <StackLayout Grid.Column="3">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Crop_Click" />
+                    </StackLayout.GestureRecognizers>
+                    <Image Source="ic_crop"
+                           WidthRequest="20"
+                           Aspect="AspectFit" />
+                    <Label Text="Crop"
+                           Style="{StaticResource EditLabelStyle}" />
+                    <BoxView Style="{StaticResource EditBoxviewStyle}"
+                             IsVisible="{Binding CropVisible}" />
+                </StackLayout>
+            </Grid>
+            <!--<ScrollView Grid.Row="3"
                         Orientation="Horizontal"
                         HorizontalScrollBarVisibility="Never"
                         Margin="3"
                         VerticalOptions="Center">
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>-->
                 <StackLayout Orientation="Horizontal">
                     <StackLayout WidthRequest="70">
                         <StackLayout.GestureRecognizers>
@@ -745,21 +795,9 @@
                                  IsVisible="{Binding DrawVisible}" />
                     </StackLayout>
                     <StackLayout WidthRequest="70">
-                        <!--<StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="AddText_Click" />
-                        </StackLayout.GestureRecognizers>-->
-                        <Image Source="ic_add_text"
-                               WidthRequest="20"
-                               Aspect="AspectFit" />
-                        <Label Text="Text"
-                               Style="{StaticResource EditLabelStyle}" />
-                        <BoxView Style="{StaticResource EditBoxviewStyle}"
-                                 IsVisible="{Binding AddTextVisible}" />
-                    </StackLayout>
-                    <StackLayout WidthRequest="70">
-                        <!--<StackLayout.GestureRecognizers>
+                        <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Tapped="Crop_Click" />
-                        </StackLayout.GestureRecognizers>-->
+                        </StackLayout.GestureRecognizers>
                         <Image Source="ic_crop"
                                WidthRequest="20"
                                Aspect="AspectFit" />
@@ -769,7 +807,7 @@
                                  IsVisible="{Binding CropVisible}" />
                     </StackLayout>
                 </StackLayout>
-            </ScrollView>
+            </ScrollView>-->
         </Grid>
         <ActivityIndicator VerticalOptions="Center"
                            x:Name="Indicator"
