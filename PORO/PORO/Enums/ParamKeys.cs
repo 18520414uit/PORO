@@ -14,6 +14,7 @@ namespace PORO.Enums
         ImageToChange,
         UserLogin,
         SKBitmap,
-        UserProfile
+        UserProfile,
+        UserModel
     }
 }

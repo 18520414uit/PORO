@@ -165,7 +165,7 @@ namespace PORO.ViewModels
         public ICommand BackCommand { get; set; }
         public async void ExcuteBack()
         {
-            await Navigation.GoBackAsync();
+            await Navigation.GoBackAsync(animated: false);
         }
         #endregion
     }

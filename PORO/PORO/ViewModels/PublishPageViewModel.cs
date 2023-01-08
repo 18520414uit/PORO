@@ -67,6 +67,7 @@ namespace PORO.ViewModels
         {
             PublishModels = new PublishModel();
             PostCommand = new Command(ExcutePost);
+            BackCommand = new Command(ExcuteBack);
         }
         #endregion
 
@@ -85,6 +86,14 @@ namespace PORO.ViewModels
             }
             UserId = Preferences.Get("userId", null);
             GetUser(UserId);
+        }
+        #endregion
+
+        #region Back
+        public ICommand BackCommand { get; set; }
+        public async void ExcuteBack()
+        {
+            await Navigation.GoBackAsync(animated: false);
         }
         #endregion
 
@@ -113,7 +122,6 @@ namespace PORO.ViewModels
         public async void ExcutePost()
         {
             var userId = UserId;
-            var count = Preferences.Get("count", 1);
             #region CheckEmpty
             if (string.IsNullOrEmpty(Name))
             {
@@ -128,7 +136,6 @@ namespace PORO.ViewModels
             #endregion
             PublishModels = new PublishModel()
             {
-                Id = (count + 1).ToString(),
                 User = UserModel,
                 Name = Name,
                 Description = Description,

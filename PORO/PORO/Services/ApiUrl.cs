@@ -22,5 +22,9 @@ namespace PORO.Services
         {
             return $"https://6395f3d990ac47c68078c88e.mockapi.io/api/poroapp/users/{id}";
         }
+        public static string UpdateUser(string id)
+        {
+            return $"https://6395f3d990ac47c68078c88e.mockapi.io/api/poroapp/users/{id}";
+        }
     }
 }

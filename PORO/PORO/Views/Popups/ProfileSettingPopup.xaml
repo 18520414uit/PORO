@@ -69,7 +69,9 @@
                         VerticalOptions="Center"
                         TextColor="Black"
                         FontAttributes="Bold"
-                        BackgroundColor="#DDDDDD"
+                        BorderColor="#003065"
+                        BorderWidth="0.5"
+                        BackgroundColor="White"
                         Grid.Row="4"/>
 
             </Grid>

@@ -1,4 +1,5 @@
-﻿using PORO.Models;
+﻿using PORO.Enums;
+using PORO.Models;
 using PORO.Services;
 using PORO.Untilities;
 using PORO.ViewModels.Base;
@@ -54,6 +55,15 @@ namespace PORO.ViewModels
         {
             SignUpCommand = new Command(ExcuteSignUp);
             SignInCommand = new Command(ExcuteSignIn);
+            BackCommand = new Command(ExcuteBack);
+        }
+        #endregion
+
+        #region Back
+        public ICommand BackCommand { get; set; }
+        public async void ExcuteBack()
+        {
+            await Navigation.GoBackAsync(animated: false);
         }
         #endregion
 
@@ -82,7 +92,7 @@ namespace PORO.ViewModels
                 await MessagePopup.Instance.Show("Please Enter Confirm Password");
                 return;
             }
-            else if(ConfirmPassword != Password)
+            else if (ConfirmPassword != Password)
             {
                 await MessagePopup.Instance.Show("Confirm Password Wrong");
                 return;
@@ -95,49 +105,13 @@ namespace PORO.ViewModels
                 Email = EmailAddress,
                 Password = Password
             };
-            SignUp();
-        }
-
-        public async void SignUp()
-        {
-            await LoadingPopup.Instance.Show();
-            var url = ApiUrl.Register();
-
-            var param = UserModels;
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-
-            HttpClient client = new HttpClient(clientHandler);
-            var httpContent = param.ObjectToStringContent();
-            if (httpContent != null)
-            {
-                var response = await client.PostAsync(requestUri: url, content: httpContent);
-                await LoadingPopup.Instance.Hide();
-                RegisterResponse(response);
-            }
-            await LoadingPopup.Instance.Hide();
-        }
-        private async void RegisterResponse(HttpResponseMessage response)
-        {
-            if (response == null)
-            {
-                await MessagePopup.Instance.Show("Check Internet");
-            }
-            else if (response.IsSuccessStatusCode)
-            {
-                await MessagePopup.Instance.Show(("Account successfully created"),
-                    closeCommand: new Command(async () =>
-                    {
-                        await Navigation.NavigateAsync($"/{ManagerPage.LoginPage}", animated: false);
-                    }));
-            }
-            else
-            {
-                await MessagePopup.Instance.Show("Account creation failed");
-            }
+            NavigationParameters param = new NavigationParameters
+                {
+                    {ParamKeys.UserModel.ToString(), UserModels}
+                };
+            await Navigation.NavigateAsync(ManagerPage.Register2Page, param, animated: false);
         }
         #endregion
-
 
         #region SignIn
         public ICommand SignInCommand { get; set; }

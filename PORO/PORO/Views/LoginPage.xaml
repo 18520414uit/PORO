@@ -14,7 +14,7 @@
     </ContentPage.Resources>
     <Grid Margin="10, 0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="50"/>
@@ -24,14 +24,13 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Image
-                Grid.Row="0"
-                Aspect="AspectFill"
-                HeightRequest="80"
-                WidthRequest="250"
-                HorizontalOptions="Center"
-                Source="logo"
-                VerticalOptions="Center" />
+        <Image Grid.Row="0"
+               Aspect="AspectFill"
+               HeightRequest="150"
+               WidthRequest="150"
+               HorizontalOptions="Center"
+               Source="logo"
+               VerticalOptions="Center" />
         <Label Text="LOGIN"
                    TextColor="#003065"
                    FontSize="30"

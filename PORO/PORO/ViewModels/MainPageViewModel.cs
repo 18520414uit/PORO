@@ -98,30 +98,36 @@ namespace PORO.ViewModels
                     {
                         if (EmailAddress == list[i].Email && Password == list[i].Password)
                         {
-                            Database database = new Database();
-                            var session = database.Get(list[i].Id);
-                            if (session == null)
-                            {
-                                UserModels = new UserModel()
-                                {
-                                    Id = list[i].Id,
-                                    UserName = list[i].UserName,
-                                    Avatar = list[i].Avatar,
-                                    Email = list[i].Email,
-                                    Password = list[i].Password
-                                };
-                                database.Insert(UserModels);
-                            }
-                            else
-                            {
-                                UserModels.Id = list[i].Id;
-                                UserModels.UserName = list[i].UserName;
-                                UserModels.Avatar = list[i].Avatar;
-                                UserModels.Email = list[i].Email;
-                                UserModels.Password = list[i].Password;
-                            }
+                            //Database database = new Database();
+                            //var session = database.Get(list[i].Id);
+                            //if (session == null)
+                            //{
+                            //    UserModels = new UserModel()
+                            //    {
+                            //        Id = list[i].Id,
+                            //        UserName = list[i].UserName,
+                            //        Avatar = list[i].Avatar,
+                            //        Email = list[i].Email,
+                            //        Password = list[i].Password
+                            //    };
+                            //    database.Insert(UserModels);
+                            //}
+                            //else
+                            //{
+                            //    UserModels.Id = list[i].Id;
+                            //    UserModels.UserName = list[i].UserName;
+                            //    UserModels.Avatar = list[i].Avatar;
+                            //    UserModels.Email = list[i].Email;
+                            //    UserModels.Password = list[i].Password;
+                            //    database.Update(UserModels);
+                            //}
                             Preferences.Set("userId", list[i].Id);
-                            await Navigation.NavigateAsync($"/{ManagerPage.HomePage}", animated: false);
+
+                            NavigationParameters param = new NavigationParameters
+                            {
+                                {ParamKeys.UserModel.ToString(), UserModels}
+                            };
+                            await Navigation.NavigateAsync($"/{ManagerPage.HomePage}", param, animated: false);
                             return;
                         }
                     }

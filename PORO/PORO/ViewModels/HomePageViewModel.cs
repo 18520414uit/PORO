@@ -82,14 +82,30 @@ namespace PORO.ViewModels
             string userId = Preferences.Get("userId", null);
             if(userId != null)
             {
-                Database database = new Database();
-                var userModel = database.Get(userId);
-                if(userModel != null)
-                {
-                    Avatar = userModel.Avatar;
-                }
+                GetUser(userId);
+                GetListTopic();
             }
             GetListTopic();
+        }
+        #endregion
+
+        #region Get User
+        public async void GetUser(string userID)
+        {
+            await LoadingPopup.Instance.Show();
+            var url = ApiUrl.GetUser(userID);
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            HttpClient client = new HttpClient(clientHandler);
+            var response = await client.GetAsync(requestUri: url);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<UserModel>(content);
+                Avatar = user.Avatar;
+            }
+            await LoadingPopup.Instance.Hide();
         }
         #endregion
 
@@ -111,7 +127,6 @@ namespace PORO.ViewModels
                 var content = await response.Content.ReadAsStringAsync();
                 var list = JsonConvert.DeserializeObject<ObservableCollection<PublishModel>>(content);
                 var n = list.Count();
-                Preferences.Set("count", n);
                 for (int i = n - 1; i >= 0; i--)
                 {
                     PublishModels.Add(new PublishModel

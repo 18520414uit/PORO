@@ -65,11 +65,12 @@ namespace PORO.ViewModels
             User = new UserModel();
             ItemSelectedCommand = new Command(ListSelectedItem);
             MoreCommand = new Command(ExecuteMore);
+            BackCommand = new Command(ExcuteBack);
         }
         #endregion
 
         #region Navigation
-        public override void OnNavigatedNewTo(INavigationParameters parameters)
+        public override void OnNavigatedTo(INavigationParameters parameters)
         {
             UserId = Preferences.Get("userId", null);
             GetUser(UserId);
@@ -77,6 +78,14 @@ namespace PORO.ViewModels
         }
         #endregion
 
+        #region Back
+        public ICommand BackCommand { get; set; }
+        public async void ExcuteBack()
+        {
+            await Navigation.GoBackAsync(animated: false);
+        }
+
+        #endregion
         #region Get User
         public async void GetUser(string userID)
         {
@@ -91,6 +100,7 @@ namespace PORO.ViewModels
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var user = JsonConvert.DeserializeObject<UserModel>(content);
+                User = user;
                 Avatar = user.Avatar;
                 Name = user.UserName;
                 Description = user.UserName;
@@ -175,7 +185,18 @@ namespace PORO.ViewModels
                           Preferences.Set("userId", 0);
                           await Navigation.NavigateAsync(ManagerPage.LoginPage, animated: false);
                       }));
-            }));
+            }), editProfileCommand: new Command(async () => 
+            {
+                if(User != null)
+                {
+                    NavigationParameters param = new NavigationParameters
+                {
+                    {ParamKeys.UserModel.ToString(), User}
+                };
+                    await Navigation.NavigateAsync(ManagerPage.EditProfilePage, param, animated: false);
+                }
+            })
+            );
                 
         }
         #endregion

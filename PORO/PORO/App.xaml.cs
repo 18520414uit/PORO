@@ -73,6 +73,8 @@ namespace PORO
             containerRegistry.RegisterForNavigation<CloudPage, CloudPageViewModel>(ManagerPage.CloudPage);
             containerRegistry.RegisterForNavigation<UserPage, UserPageViewModel>(ManagerPage.UserPage);
             containerRegistry.RegisterForNavigation<ProfilePage, ProfilePageViewModel>(ManagerPage.ProfilePage);
+            containerRegistry.RegisterForNavigation<Register2Page, Register2PageViewModel>(ManagerPage.Register2Page);
+            containerRegistry.RegisterForNavigation<EditProfilePage, EditProfileViewModel>(ManagerPage.EditProfilePage);
         }
     }
 }

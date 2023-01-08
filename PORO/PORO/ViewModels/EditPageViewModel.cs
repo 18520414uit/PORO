@@ -778,6 +778,7 @@ namespace PORO.ViewModels
             {
                 path = cropPath;
             }
+
         }
         #endregion
 
